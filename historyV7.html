@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betting History - Golden Premium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1410 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .title-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffd700 0%, #fff9c4 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .title-section p {
+            color: rgba(255, 215, 0, 0.8);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .balance-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .balance-label {
+            color: rgba(255, 215, 0, 0.9);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .balance-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Tabs Section */
+        .tabs-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            color: rgba(255, 215, 0, 0.7);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-button:hover {
+            color: rgba(255, 215, 0, 0.9);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .tab-button small {
+            display: block;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+
+        /* Table Container */
+        .table-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(0, 0, 0, 0.3) 100%);
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1.2fr 60px;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .table-header span {
+            color: rgba(255, 215, 0, 0.9);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .table-header span:first-child {
+            text-align: left;
+        }
+
+        .table-header span:not(:first-child) {
+            text-align: center;
+        }
+
+        .table-body {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* Bet Row */
+        .bet-row {
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1.2fr 60px;
+            gap: 20px;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .bet-row:hover {
+            background: rgba(255, 215, 0, 0.05);
+            transform: translateX(5px);
+        }
+
+        .bet-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Game Column */
+        .game-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .game-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+        }
+
+        .game-details h3 {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+
+        .game-time {
+            color: rgba(255, 215, 0, 0.7);
+            font-size: 0.85rem;
+        }
+
+        /* Bet Type Badge */
+        .bet-type-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .type-bet {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+        }
+
+        .type-bb {
+            background: rgba(255, 245, 157, 0.2);
+            color: #fff59d;
+            border: 1px solid rgba(255, 245, 157, 0.4);
+        }
+
+        /* Amount Columns */
+        .amount {
+            font-weight: 600;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .bet-amount {
+            color: #fff;
+        }
+
+        .win-amount.positive {
+            color: #4ade80;
+        }
+
+        .win-amount.zero {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Round ID */
+        .round-id {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: rgba(255, 215, 0, 0.8);
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        /* Action Button */
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            color: #ffd700;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 215, 0, 0.25);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        .table-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .table-body::-webkit-scrollbar-track {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .table-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.6), rgba(255, 215, 0, 0.8));
+            border-radius: 4px;
+        }
+
+        .table-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.8), rgba(255, 215, 0, 1));
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 215, 0, 0.6);
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: rgba(255, 215, 0, 0.8);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .title-section h1 {
+                font-size: 2rem;
+            }
+
+            .table-header {
+                display: none;
+            }
+
+            .bet-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                background: rgba(0, 0, 0, 0.4);
+                border-radius: 15px;
+                margin-bottom: 15px;
+                border: 1px solid rgba(255, 215, 0, 0.2);
+            }
+
+            .bet-row:hover {
+                transform: none;
+            }
+
+            .game-info {
+                justify-content: flex-start;
+            }
+
+            .bet-type-badge,
+            .amount,
+            .round-id {
+                text-align: left;
+                justify-self: start;
+            }
+
+            .action-btn {
+                justify-self: end;
+                margin-top: 10px;
+            }
+
+            .tabs-container {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .title-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .balance-amount {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="header-content">
+                <div class="title-section">
+                    <h1>Betting History</h1>
+                    <p>Track your gaming activity & wins</p>
+                </div>
+                <div class="balance-card">
+                    <div class="balance-label">Current Balance</div>
+                    <div class="balance-amount">₹1,09,998.77</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Section -->
+        <div class="tabs-container">
+            <button class="tab-button active" onclick="switchTab(this, 'history')">
+                Bet History
+            </button>
+            <button class="tab-button" onclick="switchTab(this, 'biggest-all')">
+                Biggest Wins
+                <small>All Games</small>
+            </button>
+            <button class="tab-button" onclick="switchTab(this, 'biggest-current')">
+                Biggest Wins
+                <small>Current Game</small>
+            </button>
+        </div>
+
+        <!-- Table Container -->
+        <div class="table-container">
+            <div class="table-header">
+                <span>Game</span>
+                <span>Type</span>
+                <span>Bet Amount</span>
+                <span>Win Amount</span>
+                <span>Round ID</span>
+                <span>Action</span>
+            </div>
+            <div class="table-body" id="tableBody">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample betting data
+        const bettingData = {
+            "data": [
+                {
+                    "_id": "6895b2d042bbab0d152cf095",
+                    "roundId": "Pd7u0vPV0LGowQBzhywKi",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-08T08:19:02.873Z",
+                    "gameName": "Mega Ace",
+                    "winAmount": 2364,
+                    "betAmount": 12000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6895b2b242bbab0d152cf038",
+                    "roundId": "_spjXo3udofKJDVG1Y5PS",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-08T08:18:17.480Z",
+                    "gameName": "Mega Ace",
+                    "winAmount": 56,
+                    "betAmount": 4000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6895b28642bbab0d152cefdb",
+                    "roundId": "-224knLaNPWWexzIOkNuf",
+                    "isFreeBet": true,
+                    "betType": "bet",
+                    "endTime": "2025-08-08T08:17:44.871Z",
+                    "gameName": "Mega Ace",
+                    "winAmount": 582,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6895b25642bbab0d152cef7e",
+                    "roundId": "8deM83S2PXqvQLC5aALQT",
+                    "isFreeBet": true,
+                    "betType": "bet",
+                    "endTime": "2025-08-08T08:17:03.438Z",
+                    "gameName": "Mega Ace",
+                    "winAmount": 398,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "689599a942bbab0d152ceec2",
+                    "roundId": "4SFkkotDfh1xkUHY27SrL",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-08T06:31:35.961Z",
+                    "gameName": "Mega Ace",
+                    "winAmount": 168,
+                    "betAmount": 2000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "689597ef42bbab0d152cee53",
+                    "roundId": "E26rRpteYTm62zsp4e_0r",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-08T06:24:29.230Z",
+                    "gameName": "Mega Ace",
+                    "winAmount": 870,
+                    "betAmount": 2500,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "689597be42bbab0d152cedf6",
+                    "roundId": "sjsLfTeN3w34W5-IPS_LZ",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-08T06:23:22.912Z",
+                    "gameName": "Mega Ace",
+                    "winAmount": 126,
+                    "betAmount": 2000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6895979742bbab0d152cede9",
+                    "roundId": "Jcmy6DNhtWJX3l5of-IN6",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-08T06:22:15.567Z",
+                    "gameName": "Mega Ace",
+                    "winAmount": 0,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "6895979742bbab0d152ceddc",
+                    "roundId": "hef9D11Na9KqxStP8KoSq",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-08T06:22:15.089Z",
+                    "gameName": "Mega Ace",
+                    "winAmount": 0,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "6895979642bbab0d152cedcf",
+                    "roundId": "AKKHRef3dsXgfEAt0NMMt",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-08T06:22:14.606Z",
+                    "gameName": "Mega Ace",
+                    "winAmount": 0,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "689506b542bbab0d152cebea",
+                    "roundId": "PUD8wuYBiHVl2QClvK97i",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T20:04:05.599Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 66,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": true
+                },
+                {
+                    "_id": "689506b142bbab0d152cebdd",
+                    "roundId": "xvu0RbeSUi3eciNixQFdA",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T20:04:01.860Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 0,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "689506ab42bbab0d152cebd0",
+                    "roundId": "0g9PPu5CTFhER52mFi22L",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T20:03:55.525Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 5,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "689506a642bbab0d152cebc3",
+                    "roundId": "ibSWXH1oxBZINDtAhGcMC",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T20:03:50.382Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 0,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "689504e342bbab0d152ceb58",
+                    "roundId": "Z2lfdJX259BwMFe_Ox_T5",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-07T19:56:55.467Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 2618,
+                    "betAmount": 11000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6894f29b62af9dd3ca5a7ac6",
+                    "roundId": "vmWC0PJjS0N42i7673K-c",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-07T18:38:57.200Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 1586,
+                    "betAmount": 13000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6894f27162af9dd3ca5a7ab7",
+                    "roundId": "8JF-20vqaMH2LUpNnBXm3",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T18:37:37.285Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 0,
+                    "betAmount": 130,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "6894efa362af9dd3ca5a7aa0",
+                    "roundId": "IkxDgBMn85f_BvmqR3KfC",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T18:25:39.850Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 5,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "6894e86a62af9dd3ca5a7a3c",
+                    "roundId": "tHL5RgDVrKUipAAE4I7ac",
+                    "isFreeBet": true,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T17:55:33.714Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 2072,
+                    "betAmount": 160,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6894e7e062af9dd3ca5a79b6",
+                    "roundId": "QOPJPDifPm7TeiBLlhKqF",
+                    "isFreeBet": true,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T17:53:31.395Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 462,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 15
+                },
+                {
+                    "_id": "6894e7c162af9dd3ca5a7959",
+                    "roundId": "P24JotElJ5fqlryCIvcoB",
+                    "isFreeBet": true,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T17:52:25.722Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 95,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6894e79762af9dd3ca5a78f7",
+                    "roundId": "_KlsIqWwMQtcFV2gR6Eo4",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-07T17:51:51.277Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 175,
+                    "betAmount": 2000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6894e69e62af9dd3ca5a789a",
+                    "roundId": "gC_Wh-aAZKTNFK5bAX1df",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-07T17:47:40.339Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 50,
+                    "betAmount": 2000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6894e64562af9dd3ca5a783c",
+                    "roundId": "oazhPJJkmdT-4YYpHbDKe",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-07T17:46:58.957Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 1316,
+                    "betAmount": 2000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6894e5fe62af9dd3ca5a77df",
+                    "roundId": "ovCP7n5EuP6nj7iT_3_HS",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-07T17:45:24.722Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 1092,
+                    "betAmount": 2000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6894e5f862af9dd3ca5a77d2",
+                    "roundId": "YYbPxeswI6Pk0YZpeleoy",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T17:44:24.012Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 8,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "6894e20162af9dd3ca5a7771",
+                    "roundId": "8GoDmfSTxjodJQCeUpEmq",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-07T17:28:46.782Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 1378,
+                    "betAmount": 2000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6894d9ab62af9dd3ca5a7706",
+                    "roundId": "4LiJh9fVeUZiC3nvlbxy-",
+                    "isFreeBet": true,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T16:52:24.172Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 157,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6894c9f462af9dd3ca5a76d7",
+                    "roundId": "lSx5QWKsX4uSI4LV4oMjc",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T15:44:52.982Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 120,
+                    "betAmount": 80,
+                    "currencyCode": "INR",
+                    "isBigWin": true
+                },
+                {
+                    "_id": "6894c9f362af9dd3ca5a76ca",
+                    "roundId": "g-mdUFWJqwBj27ytnUrva",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T15:44:51.330Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 0,
+                    "betAmount": 80,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "6894c9f162af9dd3ca5a76bd",
+                    "roundId": "1RQ1j7ngnQfJWhAgXyzdH",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T15:44:49.842Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 0,
+                    "betAmount": 80,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "6894c9f062af9dd3ca5a76b0",
+                    "roundId": "J1ljO_tO2zIcqRlySpbrl",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T15:44:48.088Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 0,
+                    "betAmount": 80,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "6894c9ed62af9dd3ca5a76a3",
+                    "roundId": "k7F5XaF2NW3iRFbTHw-Pk",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T15:44:45.742Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 0,
+                    "betAmount": 80,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "68948deb62af9dd3ca5a75bf",
+                    "roundId": "hxSIoYU6q9eM-ebbB3Kpn",
+                    "isFreeBet": true,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T11:29:20.565Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 486,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "68948ddb62af9dd3ca5a75b2",
+                    "roundId": "yKaPLCHgUixbNyy75U_Po",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-07T11:28:27.375Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 35,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": true
+                },
+                {
+                    "_id": "6894517e62af9dd3ca5a73ca",
+                    "roundId": "P91WtgMVzsIm7vHyiR23x",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-07T07:11:47.045Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 848,
+                    "betAmount": 2000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "689333f662af9dd3ca5a6dab",
+                    "roundId": "X-JHKyknMKc-5sNUjEll2",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-06T10:52:38.852Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 20,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "689333f062af9dd3ca5a6d9e",
+                    "roundId": "cyxbwdH1vo3kNX1FXUCX-",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-06T10:52:32.190Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 5,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "689333dd62af9dd3ca5a6d91",
+                    "roundId": "5HAODhdpIpTn_86p3N9OX",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-06T10:52:13.732Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 0,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "6893258c62af9dd3ca5a6bc5",
+                    "roundId": "N7FT2-tKQIRaeV2iUg2GF",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-06T09:51:08.662Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 0,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "6893258862af9dd3ca5a6bb8",
+                    "roundId": "vLjhtfR6w_f7oMdhVV3zO",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-06T09:51:04.309Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 0,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "689241cb3f9c759acdcdf326",
+                    "roundId": "E7C8OnpIBNsgJNOO0PiFM",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-05T17:39:23.929Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 5,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                },
+                {
+                    "_id": "689241603f9c759acdcdf2c9",
+                    "roundId": "yzZlLNjRslcY7WfLRc-pv",
+                    "isFreeBet": true,
+                    "betType": "bb",
+                    "endTime": "2025-08-05T17:38:19.526Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 274,
+                    "betAmount": 2000,
+                    "currencyCode": "INR",
+                    "isBigWin": true,
+                    "totalFreeSpins": 10
+                },
+                {
+                    "_id": "6892413e3f9c759acdcdf2bc",
+                    "roundId": "CMoO4_-oIVzewD_1sQFmx",
+                    "isFreeBet": false,
+                    "betType": "bet",
+                    "endTime": "2025-08-05T17:37:02.282Z",
+                    "gameName": "Candy Bonanza 1000",
+                    "winAmount": 0,
+                    "betAmount": 20,
+                    "currencyCode": "INR",
+                    "isBigWin": false
+                }
+            ]
+        };
+
+        // Utility functions
+        function formatCurrency(amount, currency = 'INR') {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: currency,
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            }).format(amount).replace('₹', '₹');
+        }
+
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('en-IN', {
+                month: 'short',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+        }
+
+        function getGameIcon(gameName) {
+            const words = gameName.split(' ');
+            if (words.length >= 2) {
+                return words[0][0] + words[1][0];
+            }
+            return gameName.substring(0, 2).toUpperCase();
+        }
+
+        function shortenRoundId(roundId) {
+            return roundId.length > 8 ? roundId.substring(0, 8) + '...' : roundId;
+        }
+
+        // Render betting history
+        function renderBettingHistory(data) {
+            const tableBody = document.getElementById('tableBody');
+
+            if (!data || data.length === 0) {
+                tableBody.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No betting history found</h3>
+                        <p>Your betting activity will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const rows = data.map(bet => {
+                const isWin = bet.winAmount > 0;
+                const gameIcon = getGameIcon(bet.gameName);
+
+                return `
+                    <div class="bet-row" onclick="showBetDetails('${bet._id}')">
+                        <div class="game-info">
+                            <div class="game-icon">${gameIcon}</div>
+                            <div class="game-details">
+                                <h3>${bet.gameName}</h3>
+                                <div class="game-time">${formatDateTime(bet.endTime)}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bet-type-badge type-${bet.betType}">
+                            ${bet.isFreeBet ? 'FREE ' : ''}${bet.betType.toUpperCase()}
+                        </div>
+                        
+                        <div class="amount bet-amount">
+                            ${formatCurrency(bet.betAmount, bet.currencyCode)}
+                        </div>
+                        
+                        <div class="amount win-amount ${isWin ? 'positive' : 'zero'}">
+                            ${formatCurrency(bet.winAmount, bet.currencyCode)}
+                        </div>
+
+                        <div class="round-id">
+                            ${shortenRoundId(bet.roundId)}
+                        </div>
+                        
+                        <button class="action-btn" onclick="event.stopPropagation(); showBetDetails('${bet._id}')">
+                            ›
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            tableBody.innerHTML = rows;
+        }
+
+        // Tab switching function
+        function switchTab(tabElement, tabType) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-button').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Add active class to clicked tab
+            tabElement.classList.add('active');
+
+            // Handle different tab content
+            switch (tabType) {
+                case 'history':
+                    renderBettingHistory(bettingData.data);
+                    break;
+                case 'biggest-all':
+                    const allBigWins = bettingData.data
+                        .filter(bet => bet.winAmount > 0)
+                        .sort((a, b) => b.winAmount - a.winAmount);
+                    renderBettingHistory(allBigWins);
+                    break;
+                case 'biggest-current':
+                    const currentGameWins = bettingData.data
+                        .filter(bet => bet.gameName.includes('Candy') && bet.winAmount > 0)
+                        .sort((a, b) => b.winAmount - a.winAmount);
+                    renderBettingHistory(currentGameWins);
+                    break;
+            }
+        }
+
+        // Show bet details
+        function showBetDetails(betId) {
+            const bet = bettingData.data.find(b => b._id === betId);
+            if (bet) {
+                const profit = bet.winAmount - bet.betAmount;
+                const profitText = profit > 0 ? `+${formatCurrency(profit)}` : formatCurrency(profit);
+
+                alert(`🎰 Bet Details\n\n` +
+                    `Game: ${bet.gameName}\n` +
+                    `Round ID: ${bet.roundId}\n` +
+                    `Type: ${bet.isFreeBet ? 'FREE ' : ''}${bet.betType.toUpperCase()}\n` +
+                    `Bet Amount: ${formatCurrency(bet.betAmount)}\n` +
+                    `Win Amount: ${formatCurrency(bet.winAmount)}\n` +
+                    `Profit/Loss: ${profitText}\n` +
+                    `Date: ${new Date(bet.endTime).toLocaleString()}`);
+            }
+        }
+
+        // Initialize the component
+        document.addEventListener('DOMContentLoaded', function () {
+            // Render initial betting history
+            renderBettingHistory(bettingData.data);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function (e) {
+            if (e.key >= '1' && e.key <= '3') {
+                const tabIndex = parseInt(e.key) - 1;
+                const tabs = document.querySelectorAll('.tab-button');
+                if (tabs[tabIndex]) {
+                    tabs[tabIndex].click();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
