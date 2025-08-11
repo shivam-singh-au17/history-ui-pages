@@ -64,6 +64,9 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
+            /* Dynamic viewport height for mobile */
             background:
                 linear-gradient(135deg, rgba(26, 21, 16, 0.95) 0%, rgba(15, 12, 8, 0.98) 50%, rgba(26, 21, 16, 0.95) 100%);
             backdrop-filter: blur(20px) saturate(1.2);
@@ -196,10 +199,11 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 50px;
-            max-width: 1600px;
+            max-width: min(1600px, calc(100vw - 40px));
             margin: 0 auto;
             width: 100%;
             position: relative;
+            transition: all 0.3s ease;
         }
 
         /* Premium Balance Display */
@@ -213,7 +217,6 @@
                 radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
             border-radius: 20px;
             border: 2px solid transparent;
-            /* border-image: linear-gradient(135deg, rgba(255, 215, 0, 0.6), rgba(255, 193, 7, 0.4), rgba(255, 215, 0, 0.6)) 1; */
             box-shadow:
                 0 10px 40px rgba(255, 215, 0, 0.25),
                 inset 0 1px 0 rgba(255, 215, 0, 0.3);
@@ -239,7 +242,6 @@
             box-shadow:
                 0 15px 50px rgba(255, 215, 0, 0.35),
                 inset 0 1px 0 rgba(255, 215, 0, 0.4);
-            /* border-image: linear-gradient(135deg, rgba(255, 215, 0, 0.8), rgba(255, 193, 7, 0.6), rgba(255, 215, 0, 0.8)) 1; */
         }
 
         .balance-info:hover::before {
@@ -437,9 +439,10 @@
         /* Ultra Premium Tabs */
         .tabs-section {
             padding: 20px 50px 0;
-            max-width: 1600px;
+            max-width: min(1600px, calc(100vw - 40px));
             margin: 0 auto;
             width: 100%;
+            transition: all 0.3s ease;
         }
 
         .tabs-container {
@@ -452,7 +455,6 @@
             margin-bottom: 20px;
             backdrop-filter: blur(20px) saturate(1.5);
             border: 2px solid transparent;
-            /* border-image: linear-gradient(135deg, rgba(255, 215, 0, 0.5), rgba(255, 193, 7, 0.3), rgba(255, 215, 0, 0.5)) 1; */
             box-shadow:
                 0 15px 60px rgba(0, 0, 0, 0.5),
                 inset 0 1px 0 rgba(255, 215, 0, 0.3);
@@ -564,12 +566,13 @@
         .content-section {
             flex: 1;
             padding: 0 50px 20px;
-            max-width: 1600px;
+            max-width: min(1600px, calc(100vw - 40px));
             margin: 0 auto;
             width: 100%;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            transition: all 0.3s ease;
         }
 
         .table-container {
@@ -578,7 +581,6 @@
                 radial-gradient(ellipse at center, rgba(255, 215, 0, 0.06) 0%, transparent 80%);
             border-radius: 25px;
             border: 2px solid transparent;
-            /* border-image: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(255, 193, 7, 0.2), rgba(255, 215, 0, 0.4)) 1; */
             overflow: hidden;
             flex: 1;
             backdrop-filter: blur(25px) saturate(1.5);
@@ -626,10 +628,12 @@
         }
 
         .table-body {
-            max-height: calc(100vh - 320px);
+            max-height: calc(100vh - 300px);
             overflow-y: auto;
             overflow-x: hidden;
             padding-bottom: 80px;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
         }
 
         /* Ultra Premium Bet Rows */
@@ -711,6 +715,8 @@
             position: relative;
             overflow: hidden;
             transition: all 0.4s ease;
+            transform: translateZ(0);
+            /* Hardware acceleration */
         }
 
         .game-icon::before {
@@ -726,7 +732,7 @@
         }
 
         .game-icon:hover {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.1) rotate(5deg) translateZ(0);
             box-shadow:
                 0 15px 45px rgba(255, 215, 0, 0.8),
                 inset 0 1px 0 rgba(255, 255, 255, 0.6);
@@ -996,6 +1002,8 @@
                 inset 0 1px 0 rgba(255, 215, 0, 0.3);
             position: relative;
             overflow: hidden;
+            transform: translateZ(0);
+            /* Hardware acceleration */
         }
 
         .action-button::before {
@@ -1013,7 +1021,7 @@
             background:
                 radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.3) 0%, rgba(0, 0, 0, 0.2) 70%);
             color: #ffd700;
-            transform: scale(1.15) rotate(90deg);
+            transform: scale(1.15) rotate(90deg) translateZ(0);
             box-shadow:
                 0 12px 40px rgba(255, 215, 0, 0.5),
                 inset 0 1px 0 rgba(255, 215, 0, 0.5);
@@ -1071,200 +1079,34 @@
             }
         }
 
-        /* Ultra Responsive Design */
-        @media (max-width: 1400px) {
-
-            .header-content,
-            .tabs-section,
-            .content-section {
-                padding-left: 40px;
-                padding-right: 40px;
-            }
-
-            .main-title {
-                font-size: 38px;
-                letter-spacing: 5px;
-            }
+        /* Mobile Layout Styles */
+        .mobile-info-grid {
+            display: none;
         }
 
-        @media (max-width: 1200px) {
-
-            .header-content,
-            .tabs-section,
-            .content-section {
-                padding-left: 30px;
-                padding-right: 30px;
-            }
-
-            .main-title {
-                font-size: 34px;
-                letter-spacing: 4px;
-            }
-
-            .balance-amount {
-                font-size: 28px;
-            }
+        .mobile-info-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            backdrop-filter: blur(10px);
         }
 
-        @media (max-width: 768px) {
-            .header-content {
-                padding: 10px 25px;
-                flex-direction: column;
-                gap: 25px;
-            }
-
-            .balance-info {
-                order: 2;
-                align-items: center;
-                text-align: center;
-                padding: 15px 22px;
-                width: 100%;
-                max-width: 300px;
-            }
-
-            .title-section {
-                order: 1;
-                padding-top: 15px;
-                padding: 0;
-            }
-
-            .close-button {
-                position: absolute;
-                top: 25px;
-                right: 25px;
-                width: 55px;
-                height: 55px;
-                font-size: 28px;
-            }
-
-            .main-title {
-                font-size: 32px;
-                letter-spacing: 3px;
-            }
-
-            .subtitle {
-                font-size: 14px;
-            }
-
-            .tabs-section,
-            .content-section {
-                padding-left: 25px;
-                padding-right: 25px;
-            }
-
-            .tab-button {
-                padding: 12px 22px;
-                font-size: 14px;
-                letter-spacing: 1px;
-            }
-
-            .tab-button small {
-                font-size: 12px;
-                margin-top: 5px;
-            }
-
-            /* Mobile Table Layout */
-            .table-header {
-                display: none;
-            }
-
-            .bet-row {
-                grid-template-columns: 1fr;
-                gap: 18px;
-                padding: 12px 28px;
-                background:
-                    linear-gradient(135deg, rgba(40, 35, 27, 0.8) 0%, rgba(30, 25, 20, 0.9) 100%) !important;
-                border-radius: 20px;
-                margin-bottom: 15px;
-                border: 2px solid rgba(255, 215, 0, 0.3);
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            }
-
-            .bet-row:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
-            }
-
-            .game-column {
-                grid-column: 1;
-                margin-bottom: 10px;
-            }
-
-            .bet-type,
-            .amount-column,
-            .round-id,
-            .status-column {
-                justify-content: flex-start;
-                padding: 15px 0;
-                border-top: 1px solid rgba(255, 215, 0, 0.2);
-                position: relative;
-            }
-
-            .bet-type::before,
-            .amount-column::before,
-            .round-id::before,
-            .status-column::before {
-                content: attr(data-label);
-                position: absolute;
-                left: 0;
-                top: 5px;
-                font-size: 12px;
-                font-weight: 600;
-                color: rgba(255, 215, 0, 0.8);
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-
-            .actions-column {
-                justify-content: center;
-                grid-column: 1;
-                margin-top: 15px;
-                padding-top: 15px;
-                border-top: 1px solid rgba(255, 215, 0, 0.2);
-            }
+        .mobile-info-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 215, 0, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            display: block;
         }
 
-        @media (max-width: 480px) {
-            .tabs-container {
-                flex-direction: column;
-                gap: 10px;
-                padding: 10px;
-            }
-
-            .tab-button {
-                border-radius: 15px;
-                padding: 16px 20px;
-            }
-
-            .header-content {
-                padding: 20px;
-            }
-
-            .balance-amount {
-                font-size: 26px;
-            }
-
-            .main-title {
-                font-size: 28px;
-                letter-spacing: 2px;
-            }
-
-            .bet-row {
-                padding: 20px 24px;
-                margin-bottom: 12px;
-            }
-
-            .game-icon {
-                width: 52px;
-                height: 52px;
-                font-size: 18px;
-            }
-
-            .action-button {
-                width: 45px;
-                height: 45px;
-                font-size: 20px;
-            }
+        .mobile-info-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            display: block;
         }
 
         /* Ultra Premium Glow Effects */
@@ -1305,16 +1147,6 @@
         }
 
         /* Premium Loading Shimmer */
-        /* @keyframes shimmerWave {
-            0% {
-                background-position: -200% 0;
-            }
-
-            100% {
-                background-position: 200% 0;
-            }
-        } */
-
         .shimmer {
             background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.4), transparent);
             background-size: 200% 100%;
@@ -1348,10 +1180,493 @@
             outline-offset: 2px;
         }
 
-        /* High Contrast Mode Support */
+        /* RESPONSIVE DESIGN - ENHANCED MOBILE FIRST APPROACH */
+
+        /* Large Desktop screens */
+        @media (min-width: 1400px) {
+
+            .header-content,
+            .tabs-section,
+            .content-section {
+                padding-left: 60px;
+                padding-right: 60px;
+            }
+
+            .main-title {
+                font-size: 48px;
+                letter-spacing: 8px;
+            }
+
+            .balance-amount {
+                font-size: 36px;
+            }
+
+            .bet-row {
+                padding: 18px 40px;
+                gap: 30px;
+            }
+
+            .game-icon {
+                width: 64px;
+                height: 64px;
+                font-size: 22px;
+            }
+        }
+
+        /* Desktop optimizations */
+        @media (max-width: 1400px) {
+
+            .header-content,
+            .tabs-section,
+            .content-section {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+
+            .main-title {
+                font-size: 38px;
+                letter-spacing: 5px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+
+            .header-content,
+            .tabs-section,
+            .content-section {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+
+            .main-title {
+                font-size: 34px;
+                letter-spacing: 4px;
+            }
+
+            .balance-amount {
+                font-size: 28px;
+            }
+        }
+
+        /* Tablet optimizations */
+        @media (min-width: 769px) and (max-width: 1024px) {
+
+            .header-content,
+            .tabs-section,
+            .content-section {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+
+            .main-title {
+                font-size: 25px;
+                letter-spacing: 4px;
+            }
+
+            .balance-amount {
+                font-size: 28px;
+            }
+
+            .bet-row {
+                grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr auto;
+                gap: 20px;
+                padding: 16px 30px;
+            }
+
+            .game-icon {
+                width: 52px;
+                height: 52px;
+            }
+
+            .type-badge,
+            .status-indicator {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+
+        /* Enhanced Mobile Design - Primary Breakpoint */
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 0;
+                border-radius: 0 0 25px 25px;
+            }
+
+            .header-content {
+                padding: 20px 20px 25px;
+                flex-direction: column;
+                gap: 20px;
+                position: relative;
+                align-items: stretch;
+            }
+
+            .balance-info {
+                order: 2;
+                align-self: center;
+                /* max-width: 280px; */
+                width: 100%;
+                margin: 0 auto;
+                padding: 16px 24px;
+            }
+
+            .balance-amount {
+                font-size: 26px;
+            }
+
+            .title-section {
+                order: 1;
+                padding: 0 60px 0 20px;
+                text-align: center;
+            }
+
+            .main-title {
+                font-size: 28px;
+                letter-spacing: 2px;
+                line-height: 1.2;
+            }
+
+            .subtitle {
+                font-size: 13px;
+                letter-spacing: 1.5px;
+            }
+
+            .close-button {
+                position: absolute !important;
+                top: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                order: 3;
+                z-index: 20;
+            }
+
+            /* Mobile tabs */
+            .tabs-section {
+                padding: 15px 20px 0;
+            }
+
+            .tabs-container {
+                flex-direction: row;
+                gap: 8px;
+                padding: 8px;
+                border-radius: 20px;
+            }
+
+            .tab-button {
+                border-radius: 16px;
+                padding: 14px 20px;
+                font-size: 10px;
+                letter-spacing: 1px;
+                text-align: center;
+                width: 100%;
+            }
+
+            .tab-button small {
+                font-size: 8px;
+                margin-top: 4px;
+            }
+
+            .tab-button.active {
+                transform: none;
+                box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+            }
+
+            /* Enhanced Mobile Table */
+            .content-section {
+                padding: 0 20px 20px;
+                flex: 1;
+                min-height: 0;
+            }
+
+            .table-container {
+                border-radius: 20px;
+                overflow: visible;
+            }
+
+            .table-header {
+                display: none;
+            }
+
+            /* Hide scrollbar on mobile */
+            .table-body::-webkit-scrollbar {
+                display: none;
+            }
+
+            .bet-row {
+                display: block;
+                padding: 20px;
+                margin: 15px;
+                border-radius: 18px;
+                background: linear-gradient(135deg, rgba(40, 35, 27, 0.85) 0%, rgba(30, 25, 20, 0.9) 100%) !important;
+                border: 1.5px solid rgba(255, 215, 0, 0.3);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .bet-row::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.6), rgba(255, 193, 7, 0.4), rgba(255, 215, 0, 0.6), transparent);
+                border-radius: 18px 18px 0 0;
+            }
+
+            .bet-row:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 35px rgba(255, 215, 0, 0.25);
+                border-color: rgba(255, 215, 0, 0.5);
+            }
+
+            /* Mobile game column */
+            .game-column {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 16px;
+                padding-bottom: 16px;
+                border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+            }
+
+            .game-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+                border-radius: 15px;
+                flex-shrink: 0;
+            }
+
+            .game-details {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .game-name {
+                font-size: 16px;
+                margin-bottom: 6px;
+                font-weight: 600;
+            }
+
+            .game-time {
+                font-size: 13px;
+                opacity: 0.9;
+            }
+
+            /* Show mobile info grid */
+            .mobile-info-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px 12px;
+                margin-bottom: 16px;
+            }
+
+            /* Hide desktop columns */
+            .bet-type,
+            .amount-column,
+            .round-id,
+            .status-column {
+                display: none;
+            }
+
+            .actions-column {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-top: 16px;
+                border-top: 1px solid rgba(255, 215, 0, 0.15);
+                margin-top: 16px;
+            }
+
+            .action-button {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+                border-radius: 12px;
+            }
+        }
+
+        /* Very small mobile screens */
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 16px 16px 20px;
+            }
+
+            .title-section {
+                padding: 0 50px 0 16px;
+            }
+
+            .main-title {
+                font-size: 16px;
+                letter-spacing: 1.5px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+            }
+
+            .balance-info {
+                /* max-width: 260px; */
+                padding: 14px 20px;
+            }
+
+            .balance-amount {
+                font-size: 24px;
+            }
+
+            .close-button {
+                width: 44px;
+                height: 44px;
+                font-size: 22px;
+                top: 16px;
+                right: 16px;
+            }
+
+            .tabs-section,
+            .content-section {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .bet-row {
+                padding: 16px;
+                border-radius: 16px;
+            }
+
+            .game-column {
+                gap: 12px;
+                margin-bottom: 14px;
+                padding-bottom: 14px;
+            }
+
+            .game-icon {
+                width: 46px;
+                height: 46px;
+                font-size: 16px;
+            }
+
+            .mobile-info-grid {
+                gap: 12px 8px;
+            }
+
+            .mobile-info-item {
+                padding: 10px;
+            }
+
+            .mobile-info-value {
+                font-size: 13px;
+            }
+
+            .tabs-container {
+                flex-direction: row;
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .tab-button {
+                border-radius: 15px;
+                padding: 16px 20px;
+            }
+        }
+
+        /* Landscape mobile orientation */
+        @media (max-width: 896px) and (orientation: landscape) {
+            .betting-overlay {
+                min-height: 100vh;
+            }
+
+            .header-content {
+                flex-direction: row;
+                align-items: center;
+                padding: 12px 20px;
+                gap: 20px;
+            }
+
+            .balance-info {
+                order: 1;
+                max-width: 200px;
+                padding: 12px 18px;
+            }
+
+            .balance-amount {
+                font-size: 20px;
+            }
+
+            .title-section {
+                order: 2;
+                flex: 1;
+                padding: 0 40px;
+            }
+
+            .main-title {
+                font-size: 24px;
+                letter-spacing: 2px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+            }
+
+            .close-button {
+                order: 3;
+                position: static;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .tabs-section {
+                padding: 10px 20px 0;
+            }
+
+            .tabs-container {
+                flex-direction: row;
+                padding: 6px;
+            }
+
+            .tab-button {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+
+            .content-section {
+                padding: 0 20px 15px;
+            }
+        }
+
+        /* Ultra-wide screens */
+        @media (min-width: 1920px) {
+
+            .header-content,
+            .tabs-section,
+            .content-section {
+                max-width: 1800px;
+            }
+        }
+
+        /* High DPI screens */
+        @media (-webkit-min-device-pixel-ratio: 2),
+        (min-resolution: 192dpi) {
+
+            .game-icon,
+            .action-button,
+            .close-button {
+                transform: translateZ(0);
+            }
+        }
+
+        /* High contrast mode */
         @media (prefers-contrast: high) {
             .bet-row {
-                border: 2px solid rgba(255, 215, 0, 0.8);
+                border-width: 2px;
+                border-color: rgba(255, 215, 0, 0.9);
+            }
+
+            .mobile-info-item {
+                border-color: rgba(255, 215, 0, 0.6);
             }
 
             .game-name,
@@ -1361,7 +1676,7 @@
             }
         }
 
-        /* Reduced Motion Support */
+        /* Reduced motion preferences */
         @media (prefers-reduced-motion: reduce) {
 
             *,
@@ -1370,6 +1685,31 @@
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
+            }
+
+            .bet-row,
+            .tab-button,
+            .action-button,
+            .close-button {
+                transition: none !important;
+                animation: none !important;
+            }
+
+            .bet-row::before {
+                display: none;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .betting-overlay {
+                background: white !important;
+                color: black !important;
+            }
+
+            .close-button,
+            .actions-column {
+                display: none !important;
             }
         }
     </style>
@@ -2070,68 +2410,130 @@
             setTimeout(() => element.classList.remove('shimmer'), 2000);
         }
 
-        // Enhanced betting history renderer
-        function renderBettingHistory(data) {
+        // Enhanced mobile layout renderer
+        function renderBettingHistoryMobile(data) {
             const tableBody = document.getElementById('tableBody');
 
             if (!data || data.length === 0) {
                 tableBody.innerHTML = `
-                    <div style="text-align: center; padding: 60px 30px; color: rgba(255, 215, 0, 0.6);">
-                        <div style="font-size: 48px; margin-bottom: 20px;">🎰</div>
-                        <div style="font-size: 20px; font-weight: 600; margin-bottom: 10px;">No betting history found</div>
-                        <div style="font-size: 14px; opacity: 0.8;">Start playing to see your betting history here</div>
-                    </div>
-                `;
+            <div style="text-align: center; padding: 60px 30px; color: rgba(255, 215, 0, 0.6);">
+                <div style="font-size: 48px; margin-bottom: 20px;">🎰</div>
+                <div style="font-size: 20px; font-weight: 600; margin-bottom: 10px;">No betting history found</div>
+                <div style="font-size: 14px; opacity: 0.8;">Start playing to see your betting history here</div>
+            </div>
+        `;
                 return;
             }
+
+            const isMobile = window.innerWidth <= 768;
 
             const rows = data.map((bet, index) => {
                 const isWin = bet.winAmount > 0;
                 const gameIcon = getGameIcon(bet.gameName);
                 const status = isWin ? 'win' : 'loss';
                 const statusText = isWin ? 'WIN' : 'LOSS';
+                const profit = bet.winAmount - bet.betAmount;
 
-                return `
-                    <div class="bet-row" style="animation-delay: ${index * 0.1}s">
-                        <div class="game-column">
-                            <div class="game-icon">${gameIcon}</div>
-                            <div class="game-details">
-                                <div class="game-name">${bet.gameName}</div>
-                                <div class="game-time">${formatDateTime(bet.endTime)}</div>
-                            </div>
+                if (isMobile) {
+                    return `
+                <div class="bet-row" style="animation-delay: ${index * 0.1}s">
+                    <div class="game-column">
+                        <div class="game-icon">${gameIcon}</div>
+                        <div class="game-details">
+                            <div class="game-name">${bet.gameName}</div>
+                            <div class="game-time">${formatDateTime(bet.endTime)}</div>
                         </div>
-                        
-                        <div class="bet-type" data-label="Type">
-                            <span class="type-badge type-${bet.betType}">
+                    </div>
+                    
+                    <div class="mobile-info-grid">
+                        <div class="mobile-info-item">
+                            <span class="mobile-info-label">Type</span>
+                            <span class="mobile-info-value type-badge type-${bet.betType}">
                                 ${bet.betType.toUpperCase()}
                             </span>
                         </div>
                         
-                        <div class="amount-column bet-amount" data-label="Bet Amount">
-                            ${bet.betAmount > 0 ? formatCurrency(bet.betAmount, bet.currencyCode) : 'FREE'}
-                        </div>
-                        
-                        <div class="amount-column win-amount ${isWin ? 'positive' : 'zero'}" data-label="Win Amount">
-                            ${formatCurrency(bet.winAmount, bet.currencyCode)}
-                        </div>
-
-                        <div class="round-id" data-label="Round ID">
-                            ${(bet.roundId).substring(0, 10)}...
-                        </div>
-                        
-                        <div class="status-column" data-label="Status" style="display: none;">
-                            <span class="status-indicator status-${status}">
-                                ${statusText}
+                        <div class="mobile-info-item">
+                            <span class="mobile-info-label">Status</span>
+                            <span class="mobile-info-value status-${status}">
+                                ${statusText} ${isWin ? '🎉' : '📉'}
                             </span>
                         </div>
                         
-                        <div class="actions-column" onclick="showBetDetails('${bet._id}')">
-                            <button class="action-button" onclick="event.stopPropagation(); showBetDetails('${bet.roundId}')" title="View Details">
-                                ›
-                            </button>
+                        <div class="mobile-info-item">
+                            <span class="mobile-info-label">Bet Amount</span>
+                            <span class="mobile-info-value">
+                                ${bet.betAmount > 0 ? formatCurrency(bet.betAmount, bet.currencyCode) : 'FREE'}
+                            </span>
+                        </div>
+                        
+                        <div class="mobile-info-item">
+                            <span class="mobile-info-label">Win Amount</span>
+                            <span class="mobile-info-value win-amount ${isWin ? 'positive' : 'zero'}">
+                                ${formatCurrency(bet.winAmount, bet.currencyCode)}
+                            </span>
+                        </div>
+                        
+                        <div class="mobile-info-item" style="grid-column: 1 / -1;">
+                            <span class="mobile-info-label">Round ID</span>
+                            <span class="mobile-info-value" style="font-family: 'Courier New', monospace; font-size: 12px;">
+                                ${bet.roundId}
+                            </span>
+                        </div>
+                        
+                        <div class="mobile-info-item" style="grid-column: 1 / -1;">
+                            <span class="mobile-info-label">Net Result</span>
+                            <span class="mobile-info-value" style="color: ${profit >= 0 ? '#4ade80' : '#ef4444'}; font-weight: 700;">
+                                ${profit >= 0 ? '+' : ''}${formatCurrency(profit, bet.currencyCode)}
+                            </span>
                         </div>
                     </div>
-                `;
+                    
+                    <div class="actions-column">
+                        <button class="action-button" onclick="showBetDetails('${bet.roundId}')" title="View Details">
+                            ›
+                        </button>
+                    </div>
+                </div>
+            `;
+                } else {
+                    // Desktop layout (existing code)
+                    return `
+                <div class="bet-row" style="animation-delay: ${index * 0.1}s">
+                    <div class="game-column">
+                        <div class="game-icon">${gameIcon}</div>
+                        <div class="game-details">
+                            <div class="game-name">${bet.gameName}</div>
+                            <div class="game-time">${formatDateTime(bet.endTime)}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bet-type" data-label="Type">
+                        <span class="type-badge type-${bet.betType}">
+                            ${bet.betType.toUpperCase()}
+                        </span>
+                    </div>
+                    
+                    <div class="amount-column bet-amount" data-label="Bet Amount">
+                        ${bet.betAmount > 0 ? formatCurrency(bet.betAmount, bet.currencyCode) : 'FREE'}
+                    </div>
+                    
+                    <div class="amount-column win-amount ${isWin ? 'positive' : 'zero'}" data-label="Win Amount">
+                        ${formatCurrency(bet.winAmount, bet.currencyCode)}
+                    </div>
+
+                    <div class="round-id" data-label="Round ID">
+                        ...${(bet.roundId).substring(15, 30)}
+                    </div>
+                    
+                    <div class="actions-column" onclick="showBetDetails('${bet._id}')">
+                        <button class="action-button" onclick="event.stopPropagation(); showBetDetails('${bet.roundId}')" title="View Details">
+                            ›
+                        </button>
+                    </div>
+                </div>
+            `;
+                }
             }).join('');
 
             tableBody.innerHTML = rows;
@@ -2144,6 +2546,46 @@
                     }, index * 200);
                 });
             }, 500);
+        }
+
+        // Update the main render function
+        function renderBettingHistory(data) {
+            renderBettingHistoryMobile(data);
+        }
+
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                // Re-render if layout changes between mobile/desktop
+                const activeTab = document.querySelector('.tab-button.active');
+                if (activeTab) {
+                    const currentData = getCurrentTabData();
+                    renderBettingHistory(currentData);
+                }
+            }, 250);
+        });
+
+        // Helper function to get current tab data
+        function getCurrentTabData() {
+            const activeTab = document.querySelector('.tab-button.active');
+            if (!activeTab) return bettingData.data;
+
+            const tabText = activeTab.textContent.toLowerCase();
+
+            if (tabText.includes('biggest') && tabText.includes('all')) {
+                return bettingData.data
+                    .filter(bet => bet.winAmount > 0)
+                    .sort((a, b) => b.winAmount - a.winAmount);
+            } else if (tabText.includes('biggest') && tabText.includes('current')) {
+                const currentGame = bettingData.data[0]?.gameName;
+                return bettingData.data
+                    .filter(bet => bet.gameName === currentGame && bet.winAmount > 0)
+                    .sort((a, b) => b.winAmount - a.winAmount);
+            }
+
+            return bettingData.data;
         }
 
         // Enhanced tab switching with smooth transitions
