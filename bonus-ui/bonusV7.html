@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BONUS CHEAT - Transparent</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(79, 70, 229, 0.03) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(236, 72, 153, 0.03) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(34, 197, 94, 0.02) 0%, transparent 70%),
+                transparent;
+            min-height: 100vh;
+            width: 100vw;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            backdrop-filter: blur(0.5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .open-modal-btn {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 20px 40px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 18px;
+            color: rgba(21, 6, 6, 0.9);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .open-modal-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow:
+                0 20px 40px rgba(79, 70, 229, 0.15),
+                0 10px 20px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+        }
+
+        .open-modal-btn i {
+            font-size: 20px;
+            color: rgba(79, 70, 229, 0.8);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Ultra-subtle background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 1px 1px, rgba(79, 70, 229, 0.02) 1px, transparent 0);
+            background-size: 50px 50px;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating glassmorphism orbs */
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            animation: etherealFloat 30s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes etherealFloat {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 0.3;
+            }
+
+            25% {
+                transform: translate(40px, -40px) rotate(90deg) scale(1.1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: translate(0, -80px) rotate(180deg) scale(0.9);
+                opacity: 0.7;
+            }
+
+            75% {
+                transform: translate(-40px, -40px) rotate(270deg) scale(1.05);
+                opacity: 0.4;
+            }
+        }
+
+        .main-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            padding: 20px 40px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                    rgba(79, 70, 229, 0.02) 0%,
+                    rgba(236, 72, 153, 0.02) 50%,
+                    rgba(34, 197, 94, 0.02) 100%);
+            pointer-events: none;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg,
+                    #4f46e5 0%,
+                    #7c3aed 25%,
+                    #ec4899 50%,
+                    #22c55e 75%,
+                    #4f46e5 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+            animation: gradientShift 8s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(79, 70, 229, 0.3);
+            flex: 1;
+        }
+
+        .close-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.8);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: rotate(90deg);
+            color: rgba(255, 255, 255, 1);
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            25% {
+                background-position: 50% 0%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            75% {
+                background-position: 50% 100%;
+            }
+        }
+
+        .content {
+            flex: 1;
+            padding: 3vh 3vw;
+            overflow-y: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: rgba(79, 70, 229, 0.3);
+            border-radius: 4px;
+            backdrop-filter: blur(10px);
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: rgba(79, 70, 229, 0.5);
+        }
+
+        .combinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 2vh 2vw;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .combinations-grid.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .combination-btn {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3vh 2vw;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: clamp(14px, 1.2vw, 18px);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(calc(var(--delay, 0) * 40px));
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) calc(var(--delay, 0)) forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .combination-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                    rgba(79, 70, 229, 0.1) 0%,
+                    rgba(236, 72, 153, 0.1) 50%,
+                    rgba(34, 197, 94, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .combination-btn:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow:
+                0 20px 40px rgba(79, 70, 229, 0.15),
+                0 10px 20px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .combination-btn:hover::before {
+            opacity: 1;
+        }
+
+        .combination-btn:active {
+            transform: translateY(-4px) scale(0.98);
+            transition: transform 0.1s;
+        }
+
+        .combination-btn.no-win {
+            border-color: rgba(239, 68, 68, 0.2);
+            color: rgba(252, 165, 165, 0.9);
+        }
+
+        .combination-btn.no-win:hover {
+            box-shadow: 0 20px 40px rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        .combination-btn.small-win {
+            border-color: rgba(34, 197, 94, 0.2);
+            color: rgba(134, 239, 172, 0.9);
+        }
+
+        .combination-btn.small-win:hover {
+            box-shadow: 0 20px 40px rgba(34, 197, 94, 0.15);
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+
+        .combination-btn.oak {
+            border-color: rgba(168, 85, 247, 0.2);
+            color: rgba(196, 181, 253, 0.9);
+        }
+
+        .combination-btn.oak:hover {
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.15);
+            border-color: rgba(168, 85, 247, 0.4);
+        }
+
+        .combination-btn.h-series {
+            border-color: rgba(251, 146, 60, 0.2);
+            color: rgba(253, 186, 116, 0.9);
+        }
+
+        .combination-btn.h-series:hover {
+            box-shadow: 0 20px 40px rgba(251, 146, 60, 0.15);
+            border-color: rgba(251, 146, 60, 0.4);
+        }
+
+        .combination-btn.l-series {
+            border-color: rgba(20, 184, 166, 0.2);
+            color: rgba(94, 234, 212, 0.9);
+        }
+
+        .combination-btn.l-series:hover {
+            box-shadow: 0 20px 40px rgba(20, 184, 166, 0.15);
+            border-color: rgba(20, 184, 166, 0.4);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: rgba(79, 70, 229, 0.6);
+            animation: spin 1.2s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 40vh;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .loading-container p {
+            margin-top: 20px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+
+            .title {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 2vh 2vw;
+            }
+
+            .combinations-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 1.5vh 1.5vw;
+            }
+
+            .combination-btn {
+                padding: 2.5vh 1.5vw;
+                border-radius: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 16px;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .content {
+                padding: 2vh 2vw;
+            }
+
+            .combinations-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1vh 1vw;
+            }
+
+            .combination-btn {
+                padding: 2vh 1vw;
+                border-radius: 12px;
+            }
+        }
+
+        /* Special effects for transparent theme */
+        @media (prefers-reduced-motion: no-preference) {
+            .combination-btn {
+                animation-delay: calc(var(--delay, 0) + 0.2s);
+            }
+        }
+
+        /* Dark mode compatibility */
+        @media (prefers-color-scheme: dark) {
+            .combination-btn {
+                background: rgba(0, 0, 0, 0.1);
+                border-color: rgba(255, 255, 255, 0.15);
+            }
+
+            .header {
+                background: rgba(0, 0, 0, 0.05);
+                border-bottom-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Ethereal floating orbs -->
+    <div class="floating-orb" style="width: 120px; height: 120px; top: 10%; left: 5%; animation-delay: 0s;"></div>
+    <div class="floating-orb" style="width: 80px; height: 80px; top: 60%; left: 90%; animation-delay: -12s;"></div>
+    <div class="floating-orb" style="width: 150px; height: 150px; top: 80%; left: 10%; animation-delay: -25s;"></div>
+    <div class="floating-orb" style="width: 60px; height: 60px; top: 30%; left: 85%; animation-delay: -8s;"></div>
+    <div class="floating-orb" style="width: 100px; height: 100px; top: 50%; left: 50%; animation-delay: -18s;"></div>
+
+    <!-- Open Modal Button -->
+    <button class="open-modal-btn" id="openModalBtn">
+        <i class="fas fa-gem"></i>
+        <span>View Transparent Combinations</span>
+    </button>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="main-container">
+            <div class="header">
+                <h1 class="title">BONUS CHEAT</h1>
+                <button class="close-btn" id="closeBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="content">
+                <div class="combinations-grid" id="combinationsGrid">
+                    <div class="loading-container">
+                        <div class="loading-spinner"></div>
+                        <p>Loading ethereal combinations...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class TransparentCombinationManager {
+            constructor() {
+                this.combinations = {};
+                this.init();
+            }
+
+            async init() {
+                await this.loadCombinations();
+                this.setupEventListeners();
+            }
+
+            setupEventListeners() {
+                const openModalBtn = document.getElementById('openModalBtn');
+                const modalOverlay = document.getElementById('modalOverlay');
+                const closeBtn = document.getElementById('closeBtn');
+
+                openModalBtn.addEventListener('click', () => this.openModal());
+                closeBtn.addEventListener('click', () => this.closeModal());
+                modalOverlay.addEventListener('click', (e) => {
+                    if (e.target === modalOverlay) this.closeModal();
+                });
+
+                // ESC key to close modal
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                        this.closeModal();
+                    }
+                });
+            }
+
+            openModal() {
+                const modalOverlay = document.getElementById('modalOverlay');
+                const combinationsGrid = document.getElementById('combinationsGrid');
+
+                modalOverlay.classList.add('active');
+                setTimeout(() => {
+                    this.renderCombinations();
+                    setTimeout(() => {
+                        combinationsGrid.classList.add('loaded');
+                    }, 100);
+                }, 200);
+            }
+
+            closeModal() {
+                const modalOverlay = document.getElementById('modalOverlay');
+                const combinationsGrid = document.getElementById('combinationsGrid');
+
+                combinationsGrid.classList.remove('loaded');
+                setTimeout(() => {
+                    modalOverlay.classList.remove('active');
+                }, 300);
+            }
+
+            async loadCombinations() {
+                try {
+                    const response = await fetch('./cheat.json');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    this.combinations = await response.json();
+                    console.log('✨ Transparent theme combinations loaded:', Object.keys(this.combinations).length, 'entries');
+                } catch (error) {
+                    console.warn('⚠️ Failed to load cheat.json, using fallback data:', error.message);
+                    this.combinations = {
+                        "NONE": [],
+                        "No Win": [0, 0, 0, 0, 0],
+                        "Small Win": [4, 2, 1, 0, 0],
+                        "2 oak sc": [7, 7, 0, 0, 0],
+                        "3 oak sc": [7, 7, 7, 0, 0],
+                        "4 oak sc": [7, 7, 7, 7, 0],
+                        "5 oak sc": [7, 7, 7, 7, 7],
+                        "3 oak H1": [6, 1, 40, 0, 0],
+                        "4 oak H1": [6, 1, 40, 9, 0],
+                        "5 oak H1": [6, 1, 40, 9, 25],
+                        "3 oak H2": [44, 40, 8, 0, 0],
+                        "4 oak H2": [44, 40, 8, 17, 0],
+                        "5 oak H2": [44, 40, 8, 17, 24],
+                        "3 oak H3": [12, 4, 30, 0, 0],
+                        "4 oak H3": [12, 4, 30, 27, 0],
+                        "5 oak H3": [12, 4, 30, 27, 27],
+                        "3 oak H4": [37, 32, 32, 0, 0],
+                        "4 oak H4": [37, 32, 32, 12, 0],
+                        "5 oak H4": [37, 32, 32, 12, 32],
+                        "3 oak L1": [0, 6, 5, 0, 0],
+                        "4 oak L1": [0, 6, 5, 2, 0],
+                        "5 oak L1": [0, 6, 5, 2, 42],
+                        "3 oak L2": [1, 14, 39, 66, 0],
+                        "4 oak L2": [1, 14, 39, 0, 5],
+                        "5 oak L2": [1, 14, 39, 0, 7],
+                        "3 oak L3": [13, 34, 34, 0, 70],
+                        "4 oak L3": [13, 34, 34, 1, 70],
+                        "5 oak L3": [13, 34, 34, 1, 0],
+                        "3 oak L4": [2, 28, 21, 0, 0],
+                        "4 oak L4": [2, 28, 21, 4, 0],
+                        "5 oak L4": [2, 28, 21, 4, 3],
+                        "3 oak L5": [4, 2, 1, 1, 0],
+                        "4 oak L5": [4, 2, 1, 5, 0],
+                        "5 oak L5": [4, 2, 1, 5, 7]
+                    };
+                }
+            }
+
+            getCombinationClass(key) {
+                if (key === 'No Win') return 'no-win';
+                if (key === 'Small Win') return 'small-win';
+                if (key.includes('oak sc')) return 'oak';
+                if (key.includes('H')) return 'h-series';
+                if (key.includes('L')) return 'l-series';
+                return '';
+            }
+
+            renderCombinations() {
+                const combinationsGrid = document.getElementById('combinationsGrid');
+                combinationsGrid.innerHTML = '';
+
+                const entries = Object.entries(this.combinations);
+
+                entries.forEach(([key, value], index) => {
+                    const btn = document.createElement('button');
+                    btn.className = `combination-btn ${this.getCombinationClass(key)}`;
+                    btn.style.setProperty('--delay', (index * 0.05) + 's');
+
+                    // Show only key names, no values
+                    btn.textContent = key;
+
+                    btn.setAttribute('data-combination', key);
+                    btn.setAttribute('data-values', JSON.stringify(value));
+
+                    btn.addEventListener('click', (e) => this.handleCombinationClick(e, key, value));
+
+                    combinationsGrid.appendChild(btn);
+                });
+
+                setTimeout(() => {
+                    combinationsGrid.classList.add('loaded');
+                }, 200);
+            }
+
+            handleCombinationClick(event, key, value) {
+                const btn = event.currentTarget;
+
+                // Create ripple effect
+                const ripple = document.createElement('div');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                    left: 50%;
+                    top: 50%;
+                    width: 20px;
+                    height: 20px;
+                    margin-left: -10px;
+                    margin-top: -10px;
+                `;
+
+                const keyframes = `
+                    @keyframes ripple {
+                        to {
+                            transform: scale(4);
+                            opacity: 0;
+                        }
+                    }
+                `;
+
+                if (!document.querySelector('#ripple-keyframes')) {
+                    const style = document.createElement('style');
+                    style.id = 'ripple-keyframes';
+                    style.textContent = keyframes;
+                    document.head.appendChild(style);
+                }
+
+                btn.appendChild(ripple);
+
+                setTimeout(() => {
+                    if (ripple.parentNode) {
+                        ripple.parentNode.removeChild(ripple);
+                    }
+                }, 600);
+
+                btn.style.transform = 'translateY(-4px) scale(0.98)';
+                btn.style.filter = 'brightness(1.15)';
+
+                setTimeout(() => {
+                    btn.style.transform = '';
+                    btn.style.filter = '';
+                }, 200);
+
+                console.log('✨ Transparent theme combination selected:', {
+                    name: key,
+                    values: value,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new TransparentCombinationManager();
+        });
+    </script>
+</body>
+
+</html>

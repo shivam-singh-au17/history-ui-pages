@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BONUS CHEAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background:
+                radial-gradient(ellipse at top, rgba(30, 30, 40, 0.8) 0%, transparent 70%),
+                linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 35%, #2a2a2a 65%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Subtle texture overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.015) 2px,
+                    rgba(255, 255, 255, 0.015) 4px);
+            pointer-events: none;
+        }
+
+        /* Minimal floating elements */
+        .floating-dot {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: gentleFloat 20s infinite linear;
+        }
+
+        @keyframes gentleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.6;
+                transform: translateY(90vh) translateX(10px) scale(1);
+            }
+
+            90% {
+                opacity: 0.6;
+                transform: translateY(10vh) translateX(-10px) scale(1);
+            }
+
+            100% {
+                transform: translateY(-10vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .open-modal-btn {
+            background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            padding: 22px 45px;
+            font-size: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .open-modal-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .open-modal-btn:hover::before {
+            left: 100%;
+        }
+
+        .open-modal-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .open-modal-btn:active {
+            transform: translateY(0);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background:
+                linear-gradient(135deg,
+                    rgba(25, 25, 25, 0.98) 0%,
+                    rgba(35, 35, 35, 0.98) 50%,
+                    rgba(25, 25, 25, 0.98) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            width: 95%;
+            height: 90vh;
+            overflow: hidden;
+            padding: 40px;
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            transform: scale(0.9) translateY(30px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1) translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(40, 40, 40, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .close-btn:hover {
+            background: rgba(60, 60, 60, 0.9);
+            color: #ffffff;
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .modal-header {
+            padding: 0 0 35px 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .modal-title {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-family: 'Crimson Text', serif;
+            position: relative;
+        }
+
+        .modal-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        .combinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            overflow-y: auto;
+            padding: 20px 8px 40px 8px;
+            flex: 1;
+        }
+
+        .combinations-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .combinations-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .combinations-grid::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .combinations-grid::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .combination-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 20px 16px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .combination-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.02);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .combination-btn:hover::before {
+            opacity: 1;
+        }
+
+        .combination-btn:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .combination-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Subtle differentiation for categories */
+        .no-win {
+            background: rgba(120, 120, 120, 0.04);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .no-win:hover {
+            background: rgba(140, 140, 140, 0.08);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .small-win {
+            background: rgba(100, 150, 255, 0.04);
+            border-color: rgba(100, 150, 255, 0.1);
+        }
+
+        .small-win:hover {
+            background: rgba(100, 150, 255, 0.08);
+            border-color: rgba(100, 150, 255, 0.2);
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                0 0 15px rgba(100, 150, 255, 0.1);
+        }
+
+        .oak {
+            background: rgba(200, 170, 100, 0.04);
+            border-color: rgba(200, 170, 100, 0.1);
+        }
+
+        .oak:hover {
+            background: rgba(200, 170, 100, 0.08);
+            border-color: rgba(200, 170, 100, 0.2);
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                0 0 15px rgba(200, 170, 100, 0.1);
+        }
+
+        .h-series {
+            background: rgba(100, 200, 120, 0.04);
+            border-color: rgba(100, 200, 120, 0.1);
+        }
+
+        .h-series:hover {
+            background: rgba(100, 200, 120, 0.08);
+            border-color: rgba(100, 200, 120, 0.2);
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                0 0 15px rgba(100, 200, 120, 0.1);
+        }
+
+        .l-series {
+            background: rgba(200, 100, 120, 0.04);
+            border-color: rgba(200, 100, 120, 0.1);
+        }
+
+        .l-series:hover {
+            background: rgba(200, 100, 120, 0.08);
+            border-color: rgba(200, 100, 120, 0.2);
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.2),
+                0 0 15px rgba(200, 100, 120, 0.1);
+        }
+
+        /* Minimal floating elements */
+        .floating-dot {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: subtleFloat 30s infinite linear;
+        }
+
+        @keyframes subtleFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            90% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Enhanced entrance animations */
+        @keyframes elegantFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .combinations-grid.loaded .combination-btn {
+            animation: elegantFadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .combinations-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .combinations-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 14px;
+            }
+
+            .modal-title {
+                font-size: 28px;
+            }
+
+            .modal-container {
+                padding: 35px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal-container {
+                width: 98%;
+                height: 95vh;
+                padding: 25px 20px;
+                border-radius: 12px;
+            }
+
+            .combinations-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+                padding: 16px 4px 32px 4px;
+            }
+
+            .combination-btn {
+                padding: 18px 14px;
+                font-size: 14px;
+                min-height: 65px;
+                border-radius: 8px;
+            }
+
+            .modal-title {
+                font-size: 26px;
+            }
+
+            .close-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
+                top: 16px;
+                right: 16px;
+            }
+
+            .open-modal-btn {
+                padding: 18px 35px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .combinations-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 10px;
+            }
+
+            .combination-btn {
+                padding: 16px 12px;
+                font-size: 13px;
+                min-height: 60px;
+                border-radius: 6px;
+            }
+
+            .modal-title {
+                font-size: 24px;
+            }
+
+            .modal-container {
+                padding: 20px 16px;
+            }
+        }
+
+        /* Subtle highlight effect */
+        .combination-btn {
+            position: relative;
+        }
+
+        .combination-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .combination-btn:hover::after {
+            opacity: 1;
+        }
+
+        /* Click ripple effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(0);
+            animation: rippleEffect 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="open-modal-btn">
+        <i class="fas fa-list-alt"></i> BONUS CHEAT
+    </button>
+
+    <div class="modal-overlay">
+        <div class="modal-container">
+            <button class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="modal-header">
+                <h2 class="modal-title">BONUS CHEAT</h2>
+            </div>
+
+            <div class="combinations-grid" id="combinationsGrid">
+                <!-- Combinations will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Combination data
+        const combinations = {
+            "NONE": [],
+            "No Win": [0, 0, 0, 0, 0],
+            "Small Win": [4, 2, 1, 0, 0],
+            "2 oak sc": [7, 7, 0, 0, 0],
+            "3 oak sc": [7, 7, 7, 0, 0],
+            "4 oak sc": [7, 7, 7, 7, 0],
+            "5 oak sc": [7, 7, 7, 7, 7],
+
+            "3 oak H1": [6, 1, 40, 0, 0],
+            "4 oak H1": [6, 1, 40, 9, 0],
+            "5 oak H1": [6, 1, 40, 9, 25],
+
+            "3 oak H2": [44, 40, 8, 0, 0],
+            "4 oak H2": [44, 40, 8, 17, 0],
+            "5 oak H2": [44, 40, 8, 17, 24],
+
+            "3 oak H3": [12, 4, 30, 0, 0],
+            "4 oak H3": [12, 4, 30, 27, 0],
+            "5 oak H3": [12, 4, 30, 27, 27],
+
+            "3 oak H4": [37, 32, 32, 0, 0],
+            "4 oak H4": [37, 32, 32, 12, 0],
+            "5 oak H4": [37, 32, 32, 12, 32],
+
+            "3 oak L1": [0, 6, 5, 0, 0],
+            "4 oak L1": [0, 6, 5, 2, 0],
+            "5 oak L1": [0, 6, 5, 2, 42],
+
+            "3 oak L2": [1, 14, 39, 66, 0],
+            "4 oak L2": [1, 14, 39, 0, 5],
+            "5 oak L2": [1, 14, 39, 0, 7],
+
+            "3 oak L3": [13, 34, 34, 0, 70],
+            "4 oak L3": [13, 34, 34, 1, 70],
+            "5 oak L3": [13, 34, 34, 1, 0],
+
+            "3 oak L4": [2, 28, 21, 0, 0],
+            "4 oak L4": [2, 28, 21, 4, 0],
+            "5 oak L4": [2, 28, 21, 4, 3],
+
+            "3 oak L5": [4, 2, 1, 1, 0],
+            "4 oak L5": [4, 2, 1, 5, 0],
+            "5 oak L5": [4, 2, 1, 5, 7]
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const openModalBtn = document.querySelector('.open-modal-btn');
+            const modalOverlay = document.querySelector('.modal-overlay');
+            const closeBtn = document.querySelector('.close-btn');
+            const combinationsGrid = document.getElementById('combinationsGrid');
+
+            // Create minimal floating dots
+            function createFloatingDots() {
+                for (let i = 0; i < 8; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'floating-dot';
+                    dot.style.left = Math.random() * 100 + 'vw';
+                    dot.style.width = dot.style.height = (Math.random() * 4 + 2) + 'px';
+                    dot.style.animationDelay = Math.random() * 30 + 's';
+                    dot.style.animationDuration = (Math.random() * 20 + 25) + 's';
+                    document.body.appendChild(dot);
+                }
+            }
+
+            // Create ripple effect
+            function createRipple(event, element) {
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+
+                const rect = element.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = event.clientX - rect.left - size / 2;
+                const y = event.clientY - rect.top - size / 2;
+
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+
+                element.appendChild(ripple);
+
+                setTimeout(() => {
+                    if (ripple.parentNode) {
+                        ripple.parentNode.removeChild(ripple);
+                    }
+                }, 600);
+            }
+
+            // Open modal
+            openModalBtn.addEventListener('click', function () {
+                modalOverlay.classList.add('active');
+                setTimeout(() => {
+                    combinationsGrid.classList.add('loaded');
+                }, 100);
+            });
+
+            // Close modal
+            closeBtn.addEventListener('click', function () {
+                modalOverlay.classList.remove('active');
+                combinationsGrid.classList.remove('loaded');
+            });
+
+            // Close modal when clicking outside
+            modalOverlay.addEventListener('click', function (e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('active');
+                    combinationsGrid.classList.remove('loaded');
+                }
+            });
+
+            // Keyboard support
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                    modalOverlay.classList.remove('active');
+                    combinationsGrid.classList.remove('loaded');
+                }
+            });
+
+            // Render combinations
+            function renderCombinations() {
+                combinationsGrid.innerHTML = '';
+
+                const entries = Object.entries(combinations);
+                entries.forEach(([key, value], index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'combination-btn';
+
+                    // Add specific class based on key content
+                    if (key === 'No Win') {
+                        btn.classList.add('no-win');
+                    } else if (key === 'Small Win') {
+                        btn.classList.add('small-win');
+                    } else if (key.includes('oak sc')) {
+                        btn.classList.add('oak');
+                    } else if (key.includes('H')) {
+                        btn.classList.add('h-series');
+                    } else if (key.includes('L')) {
+                        btn.classList.add('l-series');
+                    }
+
+                    btn.textContent = key;
+                    btn.setAttribute('data-value', JSON.stringify(value));
+                    btn.style.animationDelay = (index * 0.05) + 's';
+
+                    btn.addEventListener('click', function (e) {
+                        const value = this.getAttribute('data-value');
+                        console.log('Combination selected:', key, value);
+
+                        // Create ripple effect
+                        createRipple(e, this);
+
+                        // Subtle click feedback
+                        this.style.transform = 'translateY(-1px) scale(0.98)';
+                        this.style.background = 'rgba(255, 255, 255, 0.1)';
+
+                        setTimeout(() => {
+                            this.style.transform = '';
+                            this.style.background = '';
+                        }, 200);
+                    });
+
+                    combinationsGrid.appendChild(btn);
+                });
+            }
+
+            // Initialize
+            createFloatingDots();
+            renderCombinations();
+        });
+    </script>
+</body>
+
+</html>
